@@ -12,7 +12,7 @@ collection = mydb['account']
 
 #Count number of record in collection
 total= collection.count()
-
+print("toal record is :" ,total)
 #Function for increment 1 value in id column in collection
 def sequence(id):
     data=total
