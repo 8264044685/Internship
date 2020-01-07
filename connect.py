@@ -24,13 +24,15 @@ print("6. Diposit")
 def getAllData():
     for x in collection.find():
         print(x)
-def insert_data(id,name,amount,withdraw,diposit):
-    myDict = {'_id':id,'name': name,'amount':amount,'withdraw':withdraw,'diposit':diposit}
-    save = collection.insert_one(myDict)
-    if save:
-        print("insert successfully")
-    else:
-        print("Something went wrong")
+def insert_data(name,amount,withdraw,diposit):
+    try:
+        curs = collection.find().sort([("_id", -1)]).limit(1)
+        for document in curs:
+            document['_id'] = str(int(document['_id']) + 1)
+        myDict = {'_id': document['_id'], 'name': name, 'amount': amount, 'withdraw': withdraw, 'diposit': diposit}
+        collection.insert_one(myDict)
+    except Exception as e:
+        print(e)
 def delete_data(id):
     myquery = {'_id': id}
     delete = collection.delete_one(myquery)
@@ -68,13 +70,11 @@ choice = 1
 while choice > 0:
     choice = int(input("Enter Your Choice"))
     if choice == 1:
-        id = int(input("Enter your bank id"))
         name = input("Enter your name")
         amount = int(input("Enter Bank balance"))
         withdraw = 0
         diposit = 0
-
-        insert_data(id,name,amount,withdraw,diposit)
+        insert_data(name,amount,withdraw,diposit)
     elif choice == 2:
         id = int(input("Enter Id"))
         update_data(id)
