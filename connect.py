@@ -33,7 +33,10 @@ def insert_data(name,amount,withdraw,diposit):
         collection.insert_one(myDict)
     except Exception as e:
         print(e)
+<<<<<<< HEAD
 
+=======
+>>>>>>> 9880008820202b4f7fb79b3c3bc1e6e4c6c28d8b
 def delete_data(id):
     myquery = {'_id': id}
     delete = collection.delete_one(myquery)
