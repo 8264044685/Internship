@@ -7,7 +7,12 @@ mydb = myclient['BankDB']
 # paras
 colList= mydb.list_collection_names()
 collection = mydb['account']
-
+total= collection.count()
+# print("Total record  is :",total)
+def sequence(id):
+    data=total
+    data += 1
+    return data
 if "account" in colList:
     print("collection already exists")
 else:
@@ -21,24 +26,31 @@ print("4. Delete")
 print("5. Withdraw")
 print("6. Diposit")
 
+
 def getAllData():
+
     for x in collection.find():
+
         print(x)
-def insert_data(name,amount,withdraw,diposit):
+
+
+
+def insert_data(func,name,amount,withdraw,diposit):
     try:
-        curs = collection.find().sort([("_id", -1)]).limit(1)
-        for document in curs:
-            document['_id'] = str(int(document['_id']) + 1)
-        myDict = {'_id': document['_id'], 'name': name, 'amount': amount, 'withdraw': withdraw, 'diposit': diposit}
+        data = func(id)
+        # curs = collection.find().sort([("id", -1)]).limit(1)
+        # print("curs :",curs)
+        # for document in curs:
+        #     print("doc :",document)
+        #     document['id'] = str(int(document['id']) + 1)
+        #     print("id : ",document['id'])
+        myDict = {'id': data, 'name': name, 'amount': amount, 'withdraw': withdraw, 'diposit': diposit}
         collection.insert_one(myDict)
     except Exception as e:
         print(e)
-<<<<<<< HEAD
 
-=======
->>>>>>> 9880008820202b4f7fb79b3c3bc1e6e4c6c28d8b
 def delete_data(id):
-    myquery = {'_id': id}
+    myquery = {'id': id}
     delete = collection.delete_one(myquery)
     if delete:
         print("Delete successfully")
@@ -48,37 +60,38 @@ def delete_data(id):
 def update_data(id):
     print(id)
     name = input("Enter name")
-    # myquery = {"_id": id}
+    # myquery = {"id": id}
     # newvalues = {"$set": {"name": name}}
     # collection.update_one(myquery,newvalues)
-    collection.update_one({'_id':id},{'$set':{'name':name}})
+    collection.update_one({'id':id},{'$set':{'name':name}})
 
 def withdraw(id):
     money = int(input("Withdrawal amount"))
-    data = collection.find_one({"_id":id})
+    data = collection.find_one({"id":id})
     amount = data['amount']
     amount -= money
-    collection.update_one({'_id': id}, {'$set': {'amount': amount,'withdraw':money}})
-    updated_data=collection.find_one({"_id": id})
+    collection.update_one({'id': id}, {'$set': {'amount': amount,'withdraw':money}})
+    updated_data=collection.find_one({"id": id})
     print(updated_data)
 def diposit(id):
     money = int(input("Withdrawal amount"))
-    data = collection.find_one({"_id": id})
+    data = collection.find_one({"id": id})
     amount = data['amount']
     amount += money
-    collection.update_one({'_id': id}, {'$set': {'amount': amount, 'diposit': money}})
-    updated_data = collection.find_one({"_id": id})
+    collection.update_one({'id': id}, {'$set': {'amount': amount, 'diposit': money}})
+    updated_data = collection.find_one({"id": id})
     print(updated_data)
 
 choice = 1
 while choice > 0:
     choice = int(input("Enter Your Choice"))
     if choice == 1:
+
         name = input("Enter your name")
         amount = int(input("Enter Bank balance"))
         withdraw = 0
         diposit = 0
-        insert_data(name,amount,withdraw,diposit)
+        insert_data(sequence,name,amount,withdraw,diposit)
     elif choice == 2:
         id = int(input("Enter Id"))
         update_data(id)
