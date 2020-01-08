@@ -4,16 +4,10 @@ myclient = pymongo.MongoClient("mongodb://localhost:27017/")
 mydb = myclient['BankDB']
 # print("database are",myclient.list_database_names())
 # print("collection are",mydb.list_collection_names())
-# paras
-colList= mydb.list_collection_names()
 
+colList= mydb.list_collection_names()
 collection = mydb['account']
 
-#Count number of record in collection
-# total1 = collection.count()
-
-
-# print("toal record is :" ,total1)
 #Function for increment 1 value in id column in collection
 count = 0
 for total1 in collection.find():
@@ -25,7 +19,6 @@ def sequence(id):
 
     data +=1
     return data
-3#end of increment function
 
 
 #Check colletion name 'account' is exists or not
@@ -33,6 +26,7 @@ if "account" in colList:
     print("collection already exists")
 else:
     myTable = mydb['account']
+
 
 # Display diferent message in promt
 print("0. Exit")
