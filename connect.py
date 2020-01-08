@@ -175,19 +175,26 @@ while choice > 0:
         diposit = 0
         insert_data(sequence,name,amount,withdraw,diposit)
     elif choice == 2:
-        id =float(input("Enter Id : "))
-        id = round(id)
-        # print("id :",type(id),id)
+        try:
 
-        update_data(id)
-        getAllData()
+            id =float(input("Enter Id : "))
+            id = round(id)
+            # print("id :",type(id),id)
+            update_data(id)
+            getAllData()
+        except Exception as e:
+            print("Warning : ",error)
     elif choice == 3:
         getAllData()
     elif choice == 4:
-        id = float(input("Enter Id : "))
-        id = round(id)
-        delete_data(id)
-        getAllData()
+        try:
+
+            id = float(input("Enter Id : "))
+            id = round(id)
+            delete_data(id)
+            getAllData()
+        except Exception as error:
+            print("Warning : ",error)
     elif choice == 5:
         try:
             id = int(input("Enter Id : "))
@@ -197,9 +204,12 @@ while choice > 0:
         except Exception as error:
             print("Warning : Please ener valid id")
     elif choice== 6:
-        id = float(input("Enter Id : "))
-        id = round(id)
-        diposit(id)
+        try:
+            id = float(input("Enter Id : "))
+            id = round(id)
+            diposit(id)
+        except Exception as error:
+            print("Warning :",error)
     elif choice == 7:
         try:
             id = int(input("Enter Id : "))
