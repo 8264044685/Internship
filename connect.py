@@ -11,13 +11,15 @@ collection = mydb['account']
 
 #Count number of record in collection
 # total1 = collection.count()
+
+
+# print("toal record is :" ,total1)
+#Function for increment 1 value in id column in collection
 count = 0
 for total1 in collection.find():
     count +=1
 
 
-# print("toal record is :" ,total1)
-#Function for increment 1 value in id column in collection
 def sequence(id):
     data=count
 
