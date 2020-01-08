@@ -9,16 +9,7 @@ colList= mydb.list_collection_names()
 collection = mydb['account']
 
 #Function for increment 1 value in id column in collection
-count = 0
-for total1 in collection.find():
-    count +=1
 
-
-def sequence(id):
-    data=count
-
-    data +=1
-    return data
 
 
 #Check colletion name 'account' is exists or not
@@ -36,16 +27,33 @@ print("3. Display")
 print("4. Delete")
 print("5. Withdraw")
 print("6. Diposit")
+print("7. MY Info")
+
+
+# Function for perticular account holder data
+
+def myInfo(id):
+    print("my info----")
+    data = collection.find_one({"id": id})
+    # print("data :",data)
+    # for x in data:
+    print("Id :", data['id'])
+    print("Id :", data['name'])
+    print("Id :", data['amount'])
+    # print("Name :", x['name'])
+    # print("Amount :", x['amount'])
+    print("*" * 40)
 
 # Function for fetch all the record from 'account' collection
 def getAllData():
-    for x in collection.find():
-        print("Id :",x['id'])
-        print("Name :",x['name'])
-        print("Amount :",x['amount'])
-        print("*" * 40)
-
-
+    if collection.find():
+        for x in collection.find():
+            print("Id :",x['id'])
+            print("Name :",x['name'])
+            print("Amount :",x['amount'])
+            print("*" * 40)
+    else:
+        print("Acccount not created at")
 
 # Function for insert data into 'account' collection
 def insert_data(func,name,amount,withdraw,diposit):
@@ -64,24 +72,29 @@ def insert_data(func,name,amount,withdraw,diposit):
 
 # Function for Delete record
 def delete_data(id):
-    id1 = collection.find_one({"id": id})
-    if id == id1['id']:
-
+    # id1 =
+    # print("data id :",data['id'])
+    # print(id1['id'])
+    if collection.find_one({"id": id}):
+        # print("success")
         myquery = {'id': id}
         delete = collection.delete_one(myquery)
         if delete:
             print("Delete successfully")
         else:
             print("Error")
+
     else:
         print("Id not found")
+
+
 
 # Function for Update record
 def update_data(id):
     # print("update id is ",id)
-    id1 = collection.find_one({"id": id})
+    # id1 = collection.find_one({"id": id})
     # print("find id is :",id1['id'])
-    if id == id1['id']:
+    if collection.find_one({"id": id}):
         name = input("Enter name")
         # myquery = {"id": id}
         # newvalues = {"$set": {"name": name}}
@@ -92,44 +105,47 @@ def update_data(id):
 
 # Function for withdrawl money
 def withdraw(id):
-
-    data = collection.find_one({"id":id})
-    if data == id:
-        money = int(input("Withdrawal amount"))
+    data_id = collection.find_one({"id": id})
+    print("data_id ",data_id)
+    # print(data_id['id'])
+    print("Out of if contion",id)
+    if collection.find_one({"id": id}):
+        print("into if ondition",id)
+        data = collection.find_one({"id": id})
+        money = float(input("Withdrawal amount"))
         amount = data['amount']
         if money <= 0:
            print("Please Enter valid amount")
         elif amount >= money:
-            updated_data = collection.find_one({"id": id})
             amount -= money
             collection.update_one({'id': id}, {'$set': {'amount': amount,'withdraw':money}})
+            updated_data = collection.find_one({"id": id})
             print('ID : ',updated_data['id'])
             print("Name :", updated_data['name'])
             print("Amount :",updated_data['amount'])
             print("*" * 40)
         else:
             print("\n Insufficient balance  ")
+
     else:
         print("Id account is not found")
 # Funtion for diposit money
 def diposit(id):
-    updated_data = collection.find_one({"id": id})
 
-    if update_data == id:
-
-        money = int(input("Enter an amount : "))
-
+    if collection.find_one({"id": id}):
         data = collection.find_one({"id": id})
+        # updated_data = collection.find_one({"id": id})
+        money = float(input("Enter an amount : "))
         amount = data['amount']
         if money <= 0:
             print("Please enter valid balance ")
         else :
             amount += money
             collection.update_one({'id': id}, {'$set': {'amount': amount, 'diposit': money}})
-
-            print('ID : ', updated_data['id'])
-            print("Name :", updated_data['name'])
-            print("Amount :", updated_data['amount'])
+            data_updated = collection.find_one({"id": id})
+            print('ID : ', data_updated['id'])
+            print("Name :", data_updated['name'])
+            print("Amount :", data_updated['amount'])
             print("*" * 40)
     else:
         print("Id account not found")
@@ -137,8 +153,21 @@ def diposit(id):
 # Code for different choices. It's break when user enter zero.
 choice = 1
 while choice > 0:
+
     choice = int(input("Enter Your Choice : "))
     if choice == 1:
+
+        count = 0
+        for total1 in collection.find():
+            count += 1
+        # print("count = ", count)
+
+
+        def sequence(id):
+            data = count
+
+            data += 1
+            return data
 
         name = input("Enter your name : ")
         amount = int(input("Enter Bank balance : "))
@@ -146,21 +175,40 @@ while choice > 0:
         diposit = 0
         insert_data(sequence,name,amount,withdraw,diposit)
     elif choice == 2:
-        id = int(input("Enter Id"))
+        id =float(input("Enter Id : "))
+        id = round(id)
+        # print("id :",type(id),id)
+
         update_data(id)
         getAllData()
     elif choice == 3:
         getAllData()
     elif choice == 4:
-        id = int(input("Enter a customer id :"))
+        id = float(input("Enter Id : "))
+        id = round(id)
         delete_data(id)
         getAllData()
     elif choice == 5:
-        id = int(input("Enter a customer id : "))
-        withdraw(id)
+        try:
+            id = int(input("Enter Id : "))
+            print("---",id)
+        # id = round(id)
+            withdraw(id)
+        except Exception as error:
+            print("Warning : Please ener valid id")
     elif choice== 6:
-        id = int(input("Enter a customer id  : "))
+        id = float(input("Enter Id : "))
+        id = round(id)
         diposit(id)
+    elif choice == 7:
+        try:
+            id = int(input("Enter Id : "))
+            # print("---", type(id))
+            # id = round(id)
+            myInfo(id)
+        except Exception as error:
+            print("Warning : Please ener valid id")
+            print(str(error))
     elif choice == 0:
         break
     else:
