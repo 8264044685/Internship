@@ -2,24 +2,14 @@ import pymongo
 
 myclient = pymongo.MongoClient("mongodb://localhost:27017/")
 mydb = myclient['BankDB']
-# print("database are",myclient.list_database_names())
-# print("collection are",mydb.list_collection_names())
-
 colList= mydb.list_collection_names()
 collection = mydb['account']
 
-#Function for increment 1 value in id column in collection
-
-
-
-#Check colletion name 'account' is exists or not
 if "account" in colList:
     print("collection already exists")
 else:
     myTable = mydb['account']
 
-
-# Display diferent message in promt
 print("0. Exit")
 print("1. Insert")
 print("2. Update")
@@ -29,22 +19,14 @@ print("5. Withdraw")
 print("6. Diposit")
 print("7. MY Info")
 
-
-# Function for perticular account holder data
-
 def myInfo(id):
     print("my info----")
     data = collection.find_one({"id": id})
-    # print("data :",data)
-    # for x in data:
     print("Id :", data['id'])
     print("Id :", data['name'])
     print("Id :", data['amount'])
-    # print("Name :", x['name'])
-    # print("Amount :", x['amount'])
     print("*" * 40)
 
-# Function for fetch all the record from 'account' collection
 def getAllData():
     if collection.find():
         for x in collection.find():
@@ -55,27 +37,16 @@ def getAllData():
     else:
         print("Acccount not created at")
 
-# Function for insert data into 'account' collection
 def insert_data(func,name,amount,withdraw,diposit):
     try:
         data = func(id)
-        # curs = collection.find().sort([("id", -1)]).limit(1)
-        # print("curs :",curs)
-        # for document in curs:
-        #     print("doc :",document)
-        #     document['id'] = str(int(document['id']) + 1)
-        #     print("id : ",document['id'])
         myDict = {'id': data, 'name': name, 'amount': amount, 'withdraw': withdraw, 'diposit': diposit}
         collection.insert_one(myDict)
 	print("Your Id : {}, \nName    : {}, \nAmount  : {}".format(data,name,amount))
     except Exception as e:
         print(e)
 
-# Function for Delete record
 def delete_data(id):
-    # id1 =
-    # print("data id :",data['id'])
-    # print(id1['id'])
     if collection.find_one({"id": id}):
         # print("success")
         myquery = {'id': id}
@@ -88,27 +59,17 @@ def delete_data(id):
     else:
         print("Id not found")
 
-
-
-# Function for Update record
 def update_data(id):
-    # print("update id is ",id)
-    # id1 = collection.find_one({"id": id})
-    # print("find id is :",id1['id'])
     if collection.find_one({"id": id}):
         name = input("Enter name")
-        # myquery = {"id": id}
-        # newvalues = {"$set": {"name": name}}
-        # collection.update_one(myquery,newvalues)
         collection.update_one({'id':id},{'$set':{'name':name}})
     else:
         print("ID account not found")
 
-# Function for withdrawl money
 def withdraw(id):
     data_id = collection.find_one({"id": id})
     print("data_id ",data_id)
-    # print(data_id['id'])
+
     print("Out of if contion",id)
     if collection.find_one({"id": id}):
         print("into if ondition",id)
@@ -130,12 +91,12 @@ def withdraw(id):
 
     else:
         print("Id account is not found")
-# Funtion for diposit money
+
 def diposit(id):
 
     if collection.find_one({"id": id}):
         data = collection.find_one({"id": id})
-        # updated_data = collection.find_one({"id": id})
+        
         money = float(input("Enter an amount : "))
         amount = data['amount']
         if money <= 0:
@@ -151,7 +112,6 @@ def diposit(id):
     else:
         print("Id account not found")
 
-# Code for different choices. It's break when user enter zero.
 choice = 1
 while choice > 0:
 
@@ -162,7 +122,6 @@ while choice > 0:
         for total1 in collection.find():
             count += 1
         # print("count = ", count)
-
 
         def sequence(id):
             data = count
@@ -226,4 +185,3 @@ while choice > 0:
         print("Plese Enter valid choice")
 else:
     print("Invalid input")
-
