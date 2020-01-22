@@ -67,6 +67,7 @@ def insert_data(func,name,amount,withdraw,diposit):
         #     print("id : ",document['id'])
         myDict = {'id': data, 'name': name, 'amount': amount, 'withdraw': withdraw, 'diposit': diposit}
         collection.insert_one(myDict)
+	print("Your Id : {}, \nName    : {}, \nAmount  : {}".format(data,name,amount))
     except Exception as e:
         print(e)
 
