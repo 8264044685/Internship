@@ -68,11 +68,8 @@ def update_data(id):
 
 def withdraw(id):
     data_id = collection.find_one({"id": id})
-    print("data_id ",data_id)
 
-    print("Out of if contion",id)
     if collection.find_one({"id": id}):
-        print("into if ondition",id)
         data = collection.find_one({"id": id})
         money = float(input("Withdrawal amount"))
         amount = data['amount']
